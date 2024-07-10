@@ -1,0 +1,13 @@
+1. Crea una pipe con nombre mediante el comando mknod. A continuación lanza un proceso que ejecute el programa ‘cat’ redireccionando su salida estándar hacia la pipe que acabas de crear. En una shell diferente lanza otro proceso que ejecute también el ‘cat’, pero ahora redireccionando su entrada estándar hacia la pipe que acabas de crear. Introduce datos por teclado, en la primera Shell, y pulsa ^D para indicar el fin. Anota en el fichero “previo.txt” los comandos que has ejecutado.
+mknod pipe p, cat > pipe, cat < pipe
+
+2. ¿Es posible comunicar los dos comandos ‘cat’ desde dos terminales diferentes a través de una pipe sin nombre (por ejemplo, utilizando un pipeline de la shell visto en la sesión anterior)? ¿y desde el mismo terminal? Razona la respuesta en el fichero “previo.txt”.
+Desde dos terminales diferentes no, porque una pipe sin nombre se ejecuta en un mismo proceso. En cambio en un mismo terminal si, ya que podemos utilizaer el mismo proceso para utilizar la pipeline.
+
+3. Escribe en el fichero “previo.txt” el fragmento de código que deberíamos añadir a un programa cualquiera para redireccionar su entrada estándar al extremo de escritura de una pipe sin nombre utilizando las llamadas al sistema close y dup. Imagina que el descriptor de fichero asociado al extremo de escritura de la pipe es el 4.
+dup2(0, 4);
+close(0);
+
+4. createSocket: En esta función se crea el socket con la función socket(), se le asigna al socket la su estructura con el struct sockaddr y por último lo declara como un socket pasivo que recibe las solicitudes de conexión de otros sockets a patir de un accept. Para cada llamada a sistema se implenta su control de errores.
+
+serverConnection: En esta función se verifica la conexión del socket que queremos con el primero de la lista/cola

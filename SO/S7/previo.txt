@@ -1,0 +1,30 @@
+¿Qué valor devuelve la llamada read después de pulsar el ^D?
+Devuelve 0.
+
+Apunta el comando utilizado para redireccionar la entrada de un fichero al programa.
+
+./es1 < my_file.txt
+
+¿Cuál es el resultado? ¿Qué operación realiza el comando ‘grep es’?
+Filtra la busqueda.
+-rwxrwxr-x 1 jowyrko jowyrko 16136 nov 30 13:25 es1
+-rw-r--r-- 1 jowyrko jowyrko  1171 nov 30 13:25 es1.c
+-rwxrwxr-x 1 jowyrko jowyrko 16288 nov 10 10:48 es2
+-rw-r--r-- 1 jowyrko jowyrko  1700 feb  8  2021 es2.c
+-rwxrwxr-x 1 jowyrko jowyrko 16136 nov 10 10:48 es3
+-rw-r--r-- 1 jowyrko jowyrko   943 feb  8  2021 es3.c
+-rwxrwxr-x 1 jowyrko jowyrko 16048 nov 10 10:48 es4
+-rw-r--r-- 1 jowyrko jowyrko  1206 feb  8  2021 es4.c
+-rwxrwxr-x 1 jowyrko jowyrko 15776 nov 10 10:48 es5
+-rw-r--r-- 1 jowyrko jowyrko    31 feb  8  2021 es5.c
+-rwxrwxr-x 1 jowyrko jowyrko 16048 nov 10 10:48 es6
+-rw-r--r-- 1 jowyrko jowyrko   112 feb  8  2021 es6.c
+-rwxrwxr-x 1 jowyrko jowyrko 16008 nov 10 10:48 es7
+-rw-r--r-- 1 jowyrko jowyrko   107 feb  8  2021 es7.c
+-rwxrwxr-x 1 jowyrko jowyrko 16096 nov 10 10:48 es8
+-rw-r--r-- 1 jowyrko jowyrko   644 feb  8  2021 es8.c
+
+Ejecuta un pipeline que muestre en la salida estándar el PID, el usuario y el nombre de todos los procesos bash que se están ejecutando en el sistema. Para ello utiliza los comandos ps y grep combinados con una pipe. Anota el comando en el fichero “previo.txt”.
+ps | grep bash.
+
+

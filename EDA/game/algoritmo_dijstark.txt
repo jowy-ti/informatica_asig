@@ -1,0 +1,56 @@
+void movement(const Pos& old_ubi, const Pos& dest_ubi, int dni) {
+    int size_map = board_rows()*board_cols();
+    Mat mapa(board_rows(), vector<bool>(board_cols(), false));
+    Mat_int dist(board_rows(), vector<int>(board_cols(), size_map));
+    priority_queue <Dob_par> cola;
+    int i1 = old_ubi.i;
+    int j1 = old_ubi.j;
+    cola.push({0, {i1, j1}});
+    
+    while (!cola.empty()) {
+      Dob_par cas = cola.top();
+      cola.pop();
+      Pos new_ubi(cas.second.first, cas.second.second);
+      int dist_pos = cas.first;
+      
+      if (new_ubi.i == dest_ubi.i and dest_ubi.j == new_ubi.j) {
+        move(dni,RU);
+        return;
+      }
+      Pos new_ubi_up = new_ubi+Up;
+      Pos new_ubi_down = new_ubi+Down;
+      Pos new_ubi_left = new_ubi+Left;
+      Pos new_ubi_right = new_ubi+Right;
+      if (!mapa[new_ubi.i][new_ubi.j]) {
+        mapa[new_ubi.i][new_ubi.j] = true;
+
+        if (ubi_correct(new_ubi_up) and new_ubi.i >= 0 and !mapa[new_ubi.i-1][new_ubi.j]) {
+          int i = new_ubi.i-1;
+          int j = new_ubi.j;
+          int dis = dist_pos+1;
+          if (dis < dist[i][j]) {
+            dist[i][j] = dis;
+            cola.push({dis, {i, j}});
+          }
+        }
+        if (ubi_correct(new_ubi_down) and new_ubi.i < board_rows() and !mapa[new_ubi.i+1][new_ubi.j]) {
+          int i = new_ubi.i+1;
+          int j = new_ubi.j;
+          int dis = dist_pos+1;
+          cola.push({dis, {i, j}});
+        }
+        if (ubi_correct(new_ubi_left) and new_ubi.j >= 0 and !mapa[new_ubi.i][new_ubi.j-1]) {
+          int i = new_ubi.i;
+          int j = new_ubi.j-1;
+          int dis = dist_pos+1;
+          cola.push({dis, {i, j}});
+        }
+        if (ubi_correct(new_ubi_right) and new_ubi.j < board_cols() and !mapa[new_ubi.i][new_ubi.j+1]) {
+          int i = new_ubi.i;
+          int j = new_ubi.j+1;
+          int dis = dist_pos+1;
+          cola.push({dis, {i, j}});
+        }
+      }
+    }
+  }

@@ -1,0 +1,48 @@
+1. Mensaje:
+Soy el proceso 13096
+Soy el proceso 13097
+En este caso el padre es el proceso con el PID: 13096 y el hijo con el PID: 13097. Como el padre es creado antes que el hijo, el padre tiene un número PID menor.
+
+2. Mensaje:
+Antes del fork: Soy el proceso 13484
+PADRE: Soy el proceso 13484
+Los DOS: Soy el proceso 13484
+HIJO: Soy el proceso 13485
+Los DOS: Soy el proceso 13485
+Primero pasa el PID del Padre que es diferente de 0 y -1 se ejecuta la instrucción del "PID del padre" y finalmente ejecuta la instrucción de "Los Dos", después le toca al hijo passar por las instrucciones del padre, pero el hijo como se identifica como un 0 el mismo en el PID pues ejecuta la instrucción del "PID del hijo" y después la de "Los DOS".
+
+3. Mensaje:
+Antes del fork: Soy el proceso 13541
+PADRE: Soy el proceso 13541
+Solo lo ejecuta el padre: Soy el proceso 13541
+HIJO: Soy el proceso 13542
+Este caso es muy similar al anterior, la única diferéncia es que ahora el padre es el único que ejecuta la instrucción del final del código, en este caso "Solo lo ejecuta el padre", ya que el hijo después de ejecutar la instrucción en la cual dice su PID hay un exit la cual cosa aborta el proceso del hijo.
+
+4. Mensaje:
+Antes del fork: Soy el proceso 13716
+PADRE: Soy el proceso 13716
+Solo lo ejecuta el padre: Soy el proceso 13716
+HIJO: Soy el proceso 13717
+HIJO acaba: Soy el proceso 13717
+El padre es quien acaba antes la ejecución
+
+5. Mensaje:
+Antes del fork: Soy el proceso 15140
+PADRE: Soy el proceso 15140
+HIJO: Soy el proceso 15141
+HIJO:La variable_global vale A y la local a
+PADRE:La variable_global vale A y la local a
+Solo lo ejecuta el padre: Soy el proceso 15140
+Se nos muestra primero el PID del padre, però como nos encontramos con un "waitpid" para esperar al hijo, el padre espera a que el hijo ejecute todas las instrucciones y después una vez haya acabado el hijo seguirá el padre ejecutando instruciones
+
+6.
+El contenido del fichero de salida son 200000 mensajes 100000 de padre y 100000 del hijo diciendo cual es la "variable_global". También hay dos mensajes, uno al final que solo ejecuta el padre y otro al principio antes del fork() para saber el PID. No podemos asegurar que el contenido del fichero de salida será siempre el mismo después de la ejecución ya que el hijo y el padre se estan ejecutando al mismo tiempo y se envian mensajes tanto del padre como del hijo al mismo tiempo sin alguno de los dos tener preferencia.
+
+7.
+No compila porque el entero "variable_local" no está declarado en la función void "Escribe_variables". Si lo declaramos como la "variable_global" antes de las funciones para que se pueda utilizar en cualquier función, entonces si que se podría compilar.
+
+8.exec
+En este código se ejecuta el comando "ls -l" con el comando "execlp", por lo tant podemos observar todos los ficheros que se encuentran en la carpeta que estamos ubicados con la consola. Solo aparece una vez el PID del proceso una vez ya que el proceso finaliza al ejecutar la instrucción "ls -l" y no se genera ningýn proceso más.
+
+9.exec
+En este código vemos tres mensajes de PID de procesos en pantalla, el primero del "ejemplo_exec2" y los demás del archivo que ejecutamos con el comando execlp "ejemplo_fork1". Como vemos se ejecutan dos procesos el del padre y el del hijo, el proceso del padre comenzó en el "ejemplo_exec2" y el del hijo en el "ejemplo_fork1" y ambos acabaron en el "ejemplo_exec2".

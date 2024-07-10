@@ -1,0 +1,148 @@
+
+Pregunta 2. Identifica 3 diferencias entre el encaminamiento intra-domain y el encaminamiento inter-domain.
+
+1. Alcance y Aplicación
+Encaminamiento Intra-Dominio:
+Alcance: Se aplica dentro de un solo sistema autónomo (AS). Es utilizado para dirigir el tráfico dentro de una red específica, como la red interna de una empresa o proveedor de servicios de Internet (ISP).
+
+Encaminamiento Inter-Dominio:
+Alcance: Se aplica entre diferentes sistemas autónomos. Es utilizado para dirigir el tráfico entre múltiples redes independientes, como entre diferentes ISPs o entre grandes redes empresariales.
+
+2. Políticas y Métricas
+Encaminamiento Intra-Dominio:
+Políticas: Se centra en la optimización del rendimiento dentro de una red, utilizando métricas como el ancho de banda, el costo del enlace, la latencia, y la confiabilidad para determinar las rutas óptimas.
+
+Encaminamiento Inter-Dominio:
+Políticas: Las decisiones de enrutamiento están basadas más en políticas de enrutamiento que en métricas técnicas. Estas políticas pueden incluir acuerdos comerciales, preferencias de los proveedores, y consideraciones de seguridad.
+
+3. Convergencia y Complejidad
+Encaminamiento Intra-Dominio:
+Convergencia: Los protocolos intra-dominio tienden a tener tiempos de convergencia más rápidos debido a su diseño para funcionar dentro de un entorno más controlado y de menor escala. Los routers tienen una visión completa y detallada de la topología de la red interna.
+
+Encaminamiento Inter-Dominio:
+Convergencia: Puede tener tiempos de convergencia más lentos debido a la escala y la naturaleza descentralizada de Internet, donde múltiples AS independientes deben sincronizarse. Además, las políticas de enrutamiento pueden complicar el proceso de convergencia.
+
+Pregunta 3. Identifica 3 características qué permitan diseñar de forma general un protocolo de
+encaminamiento.
+- The format and content of routing packets exchanged between routers and
+how is done this exchange (e.g.; unicast, broadcast, multicast, ...)
+- The periodicity with which the packets are exchanged
+- Associated algorithms that allow to calculate the best path towards
+destination and thus allows to decide the leaving interface (e.g., minimum
+cost algorithms and associated metrics)
+
+Pregunta 4. ¿Qué es una red principal (“major network”)? ¿Qué diferencia hay entre sumarización y
+agregación?
+Son las clases A,B,C utilizadas en redes IP, que agrupan todas las redes IP. La sumarización conduce una IP a su clase respectiva, en cambio la agregación consiste en representar varias redes IP en una que las agrupe. 
+
+Pregunta 5. Explica brevemente el algoritmo de búsqueda en una tabla de encaminamiento.
+El Patricia tree Algorithm consiste en organizar la tabla de encaminamiento de forma jerárquica. De este modo tenemos en el primer nivel las IP's con menor bits de máscara y de estas IP cuelgan otras subredes IP pertenecientes a la red IP mayor, en forma de árbol, de esta forma no hay que hacer demasiados saltos para encontrar la red IP con mayor máscara de bits.
+
+Pregunta 6. a) Explica que función y cómo funciona el mecanismo de flooding en un protocolo Link
+State. b) ¿Cómo se realiza el flooding en una red OSPF con un único área?, c) ¿Cómo se realiza el
+flooding en una red OSPF multi-área?
+El mecanismo de flooding consiste en que los routers de una red consigan tener una base de datos con una topología de la red. En los protocolos link State los routers van anunciando a los routers vecinos lo cambios que vayan recibiendo de la topología de la red, por ejemplo si se cae un enlace. EN OSPF en un único área una vez elegidos los DR's y BDR's de las redes del área, el DR es el encargado de actualizar la base de datos de los DROTHERS, estos Drothers avisan únicamente al DR cuando sucede un cambio en la topología entre él y sus vecinos. El BDR sirve de backup para el DR. En una red multi-área los routers internos de cada área solamente tienen una base de datos con la topología de su área, son los ABR's y ASBR's, quienes tienen más ed una base de datos, tantas como areas adjacentes.
+
+Pregunta 7. ¿Qué es la convergencia en un protocolo de encaminamiento? Menciona al menos 3
+parámetros que pueden impactar en dicha convergencia. Indica que órdenes de magnitud (y
+justifica dichos ordenes) tiene la convergencia en los protocolos RIP, OSPF y BGP.
+La convergencia en un protocolo de encaminamiento es el tiempo que tardan los routers en llegar a un conocimineto común de la red.
+El número de routers en la red, distancia en hops entre routers, recursos como bandwidth. 
+
+Pregunta 8. Define el concepto de convergencia en un protocolo de encaminamiento. ¿Qué factores
+influencian en la convergencia en un protocolo de encaminamiento? Define el concepto de
+convergencia en STP. ¿Qué factores influencian en la convergencia del STP? Menciona los órdenes
+de magnitud (y justifica dichos ordenes) en OSPF, BGP y STP.
+La convergencia en STP es cuando el conjunto de switches deseados han creado la topología de árbol correspondiente, y todos los switches son conscientes de la topología. El número de switches, el ancho de banda que haya disponible para la comunicación entre switches... 
+OSPF milisegundos, STP 45seg, BGP minutos.
+
+Pregunta 9. Explica cuál es la diferencia entre un protocolo por vector de distancia y un protocolo por
+estado del enlace. Y entre un protocolo “Classless” y otro “Classful”. Menciona un protocolo que
+sea vector de distancia y classless, vector de distancia y classful, estado de enlace y classless,
+estado de enlace y classful.
+Los protocolos de estado de enlace tienen una base de datos con la topología de la red, es decir, se comparte información con todos los routers de la red. En cambio un protocolo por vector de distancia solo se intercambia información entre vecinos. Los tiempos de convergencia en link state son bastante menores. Un protocolo Classles permite subneting, adierten la máscara, en cambio los classful no permite subneting. 
+RIPv2,RIPv1,OSPF.
+
+Pregunta 10. Indica las 3 características principales que definan el funcionamiento de un protocolo
+de estado de enlace, no necesariamente OSPF.
+- Tienen que tener un protocolo de HELLO, para saber el estado del enlace entre routers vecinos
+- Necesitan un protocolo de flooding para construir la topología de la red
+- Necesita un algoritmo de mínimo coste como Dijstrak para calcular la mejor ruta
+
+Pregunta 11. Indica las 4 características principales qué definen el funcionamiento de OSPF.
+- Protocolo HELLO
+- Enviar LSA's
+- Mantener una base de datos con la topología de la red
+- Algoritmo de mínimo coste
+
+Pregunta 12. ¿Cuáles son las funcionalidades del protocolo de HELLO en OSPF?
+Para descubrir los vecinos con los que hay conexión directa y para manetener la información del estado de enlace, en caso de caer un enlace o añadir uno nuevo se tiene que advertir al DR.
+
+Pregunta 13. ¿Para qué sirven las direcciones multicast 224.0.0.5 y 224.0.0.6?
+
+224.0.0.5: hello a todos los routers
+224.0.0.6: para DRs y BDRs
+
+Pregunta 14. Explica para qué sirve y porqué se usan un DR y un BDR en OSPF. Explica cómo se
+eligen el DR y el BDR. ¿Cómo podemos forzar que una interfaz no sea elegida como DR
+o BDR? ¿Cómo participan los DR cuando cae un enlace en una red OSPF?
+
+Para minimizar la cantidad de paquetes que se envian para actualizar la base de datos. Por la prioridad más alta, y sinó el RID más alto, poniendo la prioridad a 0. Reciben el mensaje multicats 224.0.0.6 y se encargan de actualizar la base de datos de los routers de la red.
+
+
+Pregunta 15. ¿Cuál es la utilidad de tener una arquitectura multi-área en OSPF? Da una justificación
+desde el punto de vista de eficiencia en la convergencia de la red y otra desde el punto
+de vista de negocio de un ISP. Identifica los tipos de routers que aparecen en una red
+multi-área OSPF y qué función tienen.
+
+Reducir el tiempo de convergencia de los routers y la cantidad de veces que se recalculan rutas y se actualiza la base de datos. También para separar en areas lo diferentes tipos de servicio que ofrece por ejemplo un ISP. routers internos, routers backbone, ABR, ASBR.
+
+
+Pregunta 18. ¿Por qué OSPF en su versión BMA no funciona en una red no-broadcast? ¿Qué posibles
+soluciones nos ofrece OSPF en las redes NBMA?
+
+Porque necesita hacer multicast al DR y BDR para luego el DR hacer un multicast a los demás routers y actualizar sus bases de datos, además no sería difícil hacer los hellos. Simular una BMA con una full mesh de circuitos virtuales y establecer/simular una colección de conexiones punto a punto en la cual cada conexión hay un DR y un BDR.
+
+
+Pregunta 19. Explica los tipos de routers qué aparecen en una red multi-área OSPF. ¿Qué tipos de
+LSA’s anuncian cada uno de ellos?, ¿Cuántas Bases de Datos OSPF mantiene cada uno
+de ellos?
+
+Routers internos: 1, LSA 1 2
+Routers backbone: 1, LSA 1 2
+ABR: Número de areas con enlace, LSA 3 4
+ASBR: Número de areas con enlace, LSA 5 7
+
+
+Pregunta 20. ¿Qué diferencia hay entre el intra-routing y el inter-routing en una red OSPF multi-
+área? Indica qué tipo de routers OSPF se ven involucrados en una comunicación de
+cada uno de estos dos tipos de routing y el tipo de LSA’s que intercambian. ¿Cuántas
+Bases de Datos OSPF mantienen cada tipo de router?
+
+Pregunta 21. Enuncia los tipos de LSA’s OSPF qué hay en una red multi-área y que funcionalidad
+tienen dentro del esquema OSPF multiárea.
+
+Type 1: Router LSA:
+ generated by each router inside its area towards each internal router,
+ describes each link state and cost for each internal router,
+ Type 2: Network LSA:
+ generated by each DR (in a BMA network), describes the set of routers
+connected to that BMA network (only sent inside the area),
+ Type 3: Summary LSA:
+ generated by each ABR router, describe external routes (got from other
+ABR’s),
+ There is an entry per each subnetwork (summarized),
+ Type 4: ASBR summary LSA:
+ generated by each ABR router, describe routes towards ASBR’s (to get
+out the AS),
+
+Type 5: AS external LSA:
+ generated by ASBR routers, describe external routes belonging to other AS (e.g.,
+default network to get out the AS),
+ used in standard areas that are not “Stub Areas” or “No So Stubby Areas”
+ Type 7: NSSA (Not So Stubby Area) external LSA:
+ generated by ASBR routers, describe external routes belonging to other AS (e.g.,
+default network to get out the AS),
+ only used by Not So Stubby areas (NSSA).
+
+

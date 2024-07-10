@@ -1,0 +1,41 @@
+
+void movement(const Pos& old_ubi, const Pos& new_ubi, int dni) {
+    Dir direc = Right;
+    int i1 = old_ubi.i;
+    int j1 = old_ubi.j;
+    int i2 = new_ubi.i;
+    int j2 = new_ubi.j;
+    int dif_i = i2-i1;
+    int dif_j = j2-j1;
+    Cell celda_right;
+    Cell celda_left;
+    Cell celda_up;  
+    Cell celda_down;
+    if (pos_ok(old_ubi+Right)) celda_right = cell(old_ubi+Right); 
+    if (pos_ok(old_ubi+Left)) celda_left = cell(old_ubi+Left);
+    if (pos_ok(old_ubi+Up)) celda_up = cell(old_ubi+Up);
+    if (pos_ok(old_ubi+Down)) celda_down = cell(old_ubi+Down);
+    
+    if (dif_i > 0 and celda_down.type != Waste) move(dni, Down);
+    else if (dif_i < 0 and celda_up.type != Waste) move(dni, Up);
+    else if (dif_j > 0 and celda_right.type != Waste) move(dni, Right);
+    else if (dif_j < 0 and celda_left.type != Waste) move(dni, Left);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    At round 3 player 0 has 20 alive units: 1 at pos (45, 19); 2 at pos (8, 57); 3 at pos (23, 9); 4 at pos (55, 35); 5 at pos (24, 26); 6 at pos (42, 13); 7 at pos (50, 55); 8 at pos (17, 43); 9 at pos (39, 57); 10 at pos (34, 28); 11 at pos (18, 53); 12 at pos (56, 29); 13 at pos (33, 9); 14 at pos (14, 43); 15 at pos (48, 23); 16 at pos (29, 36); 17 at pos (7, 33); 18 at pos (15, 17); 19 at pos (52, 28); 86 at pos (44, 39);
+    
+    At round 3 player 3 has 19 alive units: 60 at pos (34, 37); 61 at pos (35, 56); 62 at pos (32, 14); 63 at pos (15, 23); 64 at pos (57, 24); 65 at pos (50, 35); 66 at pos (29, 31); 67 at pos (0, 47); 68 at pos (43, 4); 69 at pos (4, 41); 70 at pos (37, 5); 71 at pos (40, 41); 72 at pos (48, 0); 73 at pos (52, 6); 74 at pos (26, 59); 75 at pos (45, 46); 77 at pos (13, 30); 78 at pos (33, 6); 79 at pos (59, 45); 
+info:     end player 3
+warning: cannot move to position (24, 9) with waste.
+warning: cannot move to position (43, 13) with waste.

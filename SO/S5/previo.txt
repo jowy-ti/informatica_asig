@@ -1,0 +1,31 @@
+¿Es posible saber la dirección de las variables “i” y “j” con el comando nm? ¿Por qué?
+¿En qué zona de memoria están reservadas estas variables? Busca también la
+dirección asignada a la función “suma”.
+
+La dirección de j si: 0000000000004014 B j, pero la direccción de i no porque no es una variable global. Dirección de suma: 00000000000011c9 T suma.
+
+La región del heap esta etiquetada como [heap] pero la región de datos está etiquetada con el nombre del ejecutable. Deberás deducir cual es (hay varias) por los permisos de la región. 
+
+55651cd61000-55651cd62000 r--p 00000000 103:02 3146562                   /home/jowyrko/Escritorio/SO/S5/mem2_previo_v2
+55651cd62000-55651cd63000 r-xp 00001000 103:02 3146562                   /home/jowyrko/Escritorio/SO/S5/mem2_previo_v2
+55651cd63000-55651cd64000 r--p 00002000 103:02 3146562                   /home/jowyrko/Escritorio/SO/S5/mem2_previo_v2
+55651cd64000-55651cd65000 r--p 00002000 103:02 3146562                   /home/jowyrko/Escritorio/SO/S5/mem2_previo_v2
+55651cd65000-55651cd66000 rw-p 00003000 103:02 3146562                   /home/jowyrko/Escritorio/SO/S5/mem2_previo_v2
+55651e91e000-55651e91f000 rw-p 00000000 00:00 0                          [heap]
+7f105cd86000-7f105cd89000 rw-p 00000000 00:00 0 
+7f105cd89000-7f105cdb1000 r--p 00000000 103:02 7866562                   /usr/lib/x86_64-linux-gnu/libc.so.6
+7f105cdb1000-7f105cf46000 r-xp 00028000 103:02 7866562                   /usr/lib/x86_64-linux-gnu/libc.so.6
+7f105cf46000-7f105cf9e000 r--p 001bd000 103:02 7866562                   /usr/lib/x86_64-linux-gnu/libc.so.6
+7f105cf9e000-7f105cfa2000 r--p 00214000 103:02 7866562                   /usr/lib/x86_64-linux-gnu/libc.so.6
+7f105cfa2000-7f105cfa4000 rw-p 00218000 103:02 7866562                   /usr/lib/x86_64-linux-gnu/libc.so.6
+7f105cfa4000-7f105cfb1000 rw-p 00000000 00:00 0 
+7f105cfc5000-7f105cfc7000 rw-p 00000000 00:00 0 
+7f105cfc7000-7f105cfc9000 r--p 00000000 103:02 7866517                   /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f105cfc9000-7f105cff3000 r-xp 00002000 103:02 7866517                   /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f105cff3000-7f105cffe000 r--p 0002c000 103:02 7866517                   /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f105cfff000-7f105d001000 r--p 00037000 103:02 7866517                   /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f105d001000-7f105d003000 rw-p 00039000 103:02 7866517                   /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7ffc746fb000-7ffc7471c000 rw-p 00000000 00:00 0                          [stack]
+7ffc7478d000-7ffc74791000 r--p 00000000 00:00 0                          [vvar]
+7ffc74791000-7ffc74793000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]

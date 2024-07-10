@@ -1,0 +1,38 @@
+Pregunta 1.Explica cual es el propósito de contratar una VPN.
+Poder conectarte una red de forma remota de forma segura y privada, se utiliza para conectar la red principal con redes remotas, o bien, dar acceso a un host a la red
+
+Pregunta 2.Define y explica los principales parámetros de tráfico. Idem para los parámetros de
+calidad de servicio.
+Parámetros de tráfico:
+- CIR, la transmisión media de datos b/s
+- EIR, el exceso de transmisión de datos b/s respecto el CIR
+- CBS, el tamaño de la información transmitida
+- EBS, el exceso de información transmitida permitida en un intérvalo de tiempo
+
+Parámetros QoS:
+- Delay: el retardo de un paquete en salir de su origen hasta llegar a su destino
+- Jitter: la variación de delay entre paquetes
+- Losses: la proporción de paquetes perdidos respecto los transmitidos
+
+Pregunta 3.¿Cómo funciona el enrutamiento por MPLS? ¿Qué funcionalidades tiene la etiqueta
+MPLS?
+Funciona a través de etiquetas (labels) las cuales identifican el flujo, y una etiqueta se asigna entre dos routers para identificar entre ellos el tráfico. Se puede aplicar QoS, VPN services, traffic engineering, multi-protocol support.
+
+Pregunta 4.Explica en qué consiste el servicio EtherLAN de MetroEthernet y las diferencias entre
+un servicio EPLan (Ethernet Private LAN) y uno EVPLan (Ethernet Virtual Private LAN).
+El EtherLAN de MetroEthernet consiste en poder conectar diferentes UNI's con otros UNI's (multipoint-to-multipoint), es decir, se utiliza para conectar diferentes puntos en un area metropolitana entre ellos. La diferencia está en que en EPLAN cada UNI tiene un ECV asociado y por lo tanto no hace falta el tag de la VLAN en el paquete, en cambio en EVPLan cada UNI puede tener más de un ECV asociado por lo tanto se utiliza el tag de VLAN.
+
+Pregunta 5.Explica en qué consiste el servicio EtherLine de MetroEthernet y las diferencias entre
+un servicio EPL (Ethernet Private Line) y uno EVPL (Ethernet Virtual Private Line).
+Consiste en ofrecer una conexión entre dos UNI's con una EVC (point-to-point), y se pueden definir parámetros en el EVC, como pro ejemplo el CIR, EIR, CBS y el EBS. LA diferencia está en que el EPL solo permite una conexión punto a punto entre dos UNI's con una EVC, en cambio en EVPL permite una conexión punto a punto con más de una EVC, por lo tanto se necesita utilizar el campo "tag VLAN" en el paquete.
+
+Pregunta 7.Explica cómo se usan las comunidades extendidas en una VPN MPLS-BGP.
+Las comunidades extendidas se utilizan para identificar a que VRF pertenece la ruta que se anuncia a través de BGP. 
+
+Pregunta 8.Explica como se estructuran las direcciones VPN-IPv4, explicando las distintos tipos de
+direcciones que se pueden generar. Explica como las usa y para qué BGPv4.
+Son 4+8 Bytes = 12 Bytes, 4 bytes de la dirección IPv4 y 8 bytes compuestos por 2 bytes indicando el tipo del campo, 4 bytes para la IPv4 o el AS, y 2 bytes para indicar el campo dado por el ISP. Hay tres tipos donde el campo del medio de los 8 bytes puede ser el AS, si es de 2 bytes, o la IPv4 o AS de 4 bytes. 
+
+Pregunta 9.Explica cómo se crea una VPN MPLS-BGP entre las sedes Site-1 y Site-2. Explica
+también el proceso de envío de un paquete IP entre el Site-1 y el Site-2.
+

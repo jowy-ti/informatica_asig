@@ -1,0 +1,43 @@
+PREGUNTA 18.¿Cómo puede saber un proceso el pid de sus hijos? ¿Qué llamada pueden
+utilizar los procesos para consultar su propio PID?
+Asignando a una variable el valor del fork(). Usando el getpid().
+
+PREGUNTA 19.¿En qué casos se ejecutará cualquier código que aparezca justo después de la
+llamada execlp (En cualquier caso/ En caso que el execlp se ejecute de forma correcta/ En caso
+que el exclp falle)?
+En cualquier caso.
+
+PREGUNTA 20.¿Qué directorios hay dentro de /proc/PID_PADRE? ¿Qué opción de ls has
+usado?
+attr, fd, fdinfo, attr, map_files, net, ns, task, root. ls -l.
+
+PREGUNTA 21.Para el proceso padre, apunta el contenido de los ficheros status y cmdline.
+Compara el contenido del fichero environ con el resultado del comando env (fíjate por ejemplo
+en la variable PATH y la variable PWD) ¿Qué relación hay? Busca en el contenido del fichero
+status el estado en el que se encuentra el proceso y apúntalo en el fichero de respuestas.
+Anota también el tiempo de CPU que ha consumido en modo usuario que puedes encontrarlo
+en el fichero stat del proceso (verás que stat contiene una serie de números, consulta en el
+manual el formato qué representa cada uno de esos números: man proc).
+-r--r--r--  1 joel.gonzalez.jimenez alumnes 0 Sep 30 13:28 status
+-r--r--r--  1 joel.gonzalez.jimenez alumnes 0 Sep 30 13:28 cmdline
+-r--------  1 joel.gonzalez.jimenez alumnes 0 Sep 30 13:29 environ
+Está en estado running,
+
+PREGUNTA 22.En el caso del proceso hijo, ¿a qué ficheros “apuntan” los ficheros cwd y exe?
+¿Cuál crees que es el significado de cwd y exe?
+
+PREGUNTA 23.En el caso del proceso hijo, ¿puedes mostrar el contenido de los ficheros
+environ, status y cmdline del proceso hijo? ¿En qué estado se encuentra?
+
+PREGUNTA 24.En el caso del proceso hijo, ¿a qué ficheros “apuntan” los ficheros cwd y exe?
+¿Cuál crees que es el significado de cwd y exe? ¿Qué diferencias hay con la versión anterior?
+¿A qué se deben?
+
+PREGUNTA 25.En el caso del proceso hijo, ¿puedes mostrar el contenido de los ficheros
+environ, status y cmdline del proceso hijo? ¿En qué estado se encuentra? ¿Qué diferencias hay
+con la versión anterior? ¿A qué se deben?
+
+PREGUNTA 26.Comprueba el fichero status de /proc/PID_PADRE. ¿En qué estado está el
+proceso padre?
+
+PREGUNTA 27.¿Qué has hecho para guardar la salida de las ejecuciones de myPS3?

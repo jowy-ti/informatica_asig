@@ -1,0 +1,68 @@
+Pregunta 1. Explica la diferencia entre una compresión “lossles” y una “lossy” y explica un ejemplo de
+mecanismo de como funciona cada una de ellas.
+Una compresión lossy es cuando se sacrifica información (se pierde) con el objetivo de alcanzar una mayor compresión, esto se utiliza en casos como por ejemplo la retransmisiónn en directo, audio i imágenes (mp3, JPEG,...). Son casos en que es soportable perder algo de información. En cambio la compresión lossles se utiliza con el fin de comprimir sin pérdidas de información, casos como backups, o calquier compresión de ficheros en formatos tar.gz, zip, tar.bz2.
+
+Pregunta 2. Explica la diferencia entre frames de tipo I y frames de tipo P en la compresión
+multimedia y que algoritmos o mecanismos interveniene en la formación de dichas tramas.
+los frames de tipo I son los frames de referencia y usan el algoritmo DCT para comprimir, en cambio los frames de tipo P se suelen utilizar más a menudo que los frames de tipo I, y toman de referencia el anterior P frame o I frame el cual aplican compensación por movimiento, utilizando los algoritmos MC y DCT.
+
+Pregunta 4. Queremos comprimir con codificación Huffman una fuente que genera cuatro símbolos
+{a,b,c,d} con las siguientes frecuencias relativas de la tabla. Mostrando los pasos seguidos para
+llegar al resultado, dar una posible codificación de dichos símbolos. ¿Cuál es el la longitud media
+de una palabra del nuevo código? Si tenemos un fichero de 10 Msímbolos. ¿Cuál sería el tamaño
+del fichero si usamos la codificación Huffman obtenida?
+
+
+Pregunta 5. Queremos comprimir con codificación Huffman una fuente que genera siete símbolos {a,
+b, c, d, e, f, g} con frecuencias relativas {25%, 20%, 20%, 15%, 10%, 5%, 5%}. Obten una asignación
+Huffman, el número medio de bits por símbolo con dicha asignación e indica con esta secuencia
+de probabilidades cual es el mejor número medio de bits por símbolo que se puede conseguir.
+
+
+Pregunta 6. Explica los pasos (mecanismos) principales que se usan en la compresión espacial
+multimedia.
+Hay tres pasos:
+El primero el paso de transformación, en el cual se busca dividir la muestra en bloques, no se producen pérdidas.
+El segundo paso es el de cuantificación, el cual consiste en cuantificar los coeficientes, la cual cosa provocará perdidas de información.
+el último paso es el de entropy coded, el cual consiste en aplicar alguna técnica como Huffman para comprimirlo sin perder más información.
+
+Pregunta 7. Explica la diferencia entre compresión espacial y temporal en multimedia. Explica los
+mecanismos involucrados en ambos.
+La compresión espacial tiene en cuenta la similitud/diferencia entre píxeles cercanos de una misma imagen para aplicar la compresión, en cambio la compresión temporal se aprovecha de la similitud/diferencia entre el mismo píxel en diferentes frames. El de espacial ya se ha comentado anteriormente, y el temporal utiliza el concepto de GOP, que consiste en utilizar tres tipos de frames I-frames, P-frames y B-frames. De estos frames los I-frames son los de referencia y los cuales se aplica DCT, los P-frames aplican MC y DCT y cogen como referencia al anterior I-frame o P-frame, los B-frames utilizan los mismos algoritmos para dar compensación por movimiento y tienen en cuenta el anterior y el siguiente I-frame o P-frame.
+
+Pregunta 8. Explica el concepto de GoP (Group of Pictures), I-frames, P-frames y B-frames y la relación
+que hay entre ellos.
+El GOP se indica con los parámetros M y N GOP(M,N), siendo M el número de frames hasta aparecer un P-frame y N el número de frames hasta aparecer un I-frame. La relación está explicada en la anterior pregunta.
+
+
+Pregunta 9. Justifica la necesidad de usar RTP en la transmisión multimedia.
+Es el protocolo que se encarga de transportar los datos de las transmisiones en tiempo real. Además incluye timestamps y número de secuencia y el formato del payload. Permite la sincronización y la recuperación de paquetes.
+
+Pregunta 14. Indica que protocolos (no mecanismos ni algoritmos) se pueden ver involucrados en la
+transmisión de un fichero MPEG y explica brevemente qué función realizan.
+El RTP encargado de transportar los datos (payload) del la transmisión de datos, el RTCP encargado de transportar estadísticas útiles para la transmisión y recepción, y el RTSP que sirve para establecer comunicación entre el cliente y el servidor para indicar que queremos descargar por ejemplo.
+
+Pregunta 15. ¿Qué es y que función tiene un protocolo de señalización en multimedia? Menciona
+alguno de ellos y para que se usan.
+Es un tipo de protocolo utilizado para establecer comunicación cliente-servidor, sirven para determinar el inicio y el fin de una sesión TCP y para pedir contenido. Algunos protocolos de señalización son SIP y RTSP.
+
+Pregunta 16. Explica que rol juegan los protocolos RTP, RTCP y RTSP en Internet.
+RTP se utiliza para llevar los datos (payload) de la transmisión de datos en tiempo real. RTCP se utiliza para obtener estadísticas útilies para la recepción y transmisión de datos. RTSP se utiliza para establecer comunicación cliente-servidor, indica el inicio y fin de una sesión TCP y se utiliza para comunicarse y permite obtener contenido y interactuar con la reproducción (pausando, reproduciendo, retrocediendo...).
+
+Pregunta 17. Explica porqué es necesario y que funcionalidades ofrece el protocolo RTP (Real Time
+Protocol) en servicios en tiempo real.
+
+
+Pregunta 18. a) Indica que protocolos intervenienen cuando se descarga vídeo en streaming. ¿Qué
+función tiene cada uno de los protocolos en la descarga? b) indica el encapsulamiento
+que lleva un paquete de control y un paquete de datos en dicha comunicación.
+Un paquete de control como por ejemplo RTSP pueder ir encapsulado en TCP y un paquete de datos (RTP) va encapsulado en UDP.
+
+Pregunta 19. Explica el funcionamiento básico del protocolo SIP (Session Initiated Protocol). Para
+ello dibuja un esquema identificando los elementos básicos que participan en la
+comunicación de voz y describe como participan dichos elementos en el
+establecimiento de la llamada. Una vez finalizada la llamada, indica que protocolos por
+encima del nivel L3 (es decir, no incluyas ningún protocolo de nivel L1, L2 o L3) han
+intervenido en la comunicación.
+El cliente intenta resolver el dominio a través de DNS, con un proxy intermediario, una vez resuelto el dominio, se intenta encontrar el agente con el que queremos hablar a través deñ servicio de localización, el cual nos ayudará a contactar con el agente. Una vez completado este proceso se inicia sesión TCP a través de SIP con el agente que queremos comunicarnos. Y finalmente comienza la comunicación. Se utiliza SIP, RTP, RTCP.
+

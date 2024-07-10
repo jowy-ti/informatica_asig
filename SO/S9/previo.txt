@@ -1,0 +1,41 @@
+• ¿Cómo podéis saber los sistemas de ficheros montados en vuestro sistema y de
+qué tipo son? Indica, además, en qué directorios están montados.
+#df -T
+S.ficheros     Tipo  bloques de 1K   Usados Disponibles Uso% Montado en
+tmpfs          tmpfs        601828     2088      599740   1% /run
+/dev/nvme0n1p2 ext4      244506940 24407872   207606012  11% /
+tmpfs          tmpfs       3009120        0     3009120   0% /dev/shm
+tmpfs          tmpfs          5120        4        5116   1% /run/lock
+/dev/nvme0n1p1 vfat         523248     5364      517884   2% /boot/efi
+tmpfs          tmpfs        601824     4720      597104   1% /run/user/1000
+
+
+• ¿Cómo se puede saber el número de inodos libres de un sistema de ficheros?
+¿Qué comando has utilizado y con qué opciones?
+#df -i
+S.ficheros      Nodos-i NUsados  NLibres NUso% Montado en
+tmpfs            752280    1181   751099    1% /run
+/dev/nvme0n1p2 15597568  314842 15282726    3% /
+tmpfs            752280       1   752279    1% /dev/shm
+tmpfs            752280       4   752276    1% /run/lock
+/dev/nvme0n1p1        0       0        0     - /boot/efi
+tmpfs            150456     157   150299    1% /run/user/1000
+
+
+• ¿Cómo se puede saber el espacio libre de un sistema de ficheros? ¿Qué
+comando has utilizado y con qué opciones?
+#df -h
+S.ficheros     Tamaño Usados  Disp Uso% Montado en
+tmpfs            588M   2,1M  586M   1% /run
+/dev/nvme0n1p2   234G    24G  198G  11% /
+tmpfs            2,9G      0  2,9G   0% /dev/shm
+tmpfs            5,0M   4,0K  5,0M   1% /run/lock
+/dev/nvme0n1p1   511M   5,3M  506M   2% /boot/efi
+tmpfs            588M   4,7M  584M   1% /run/user/1000
+
+¿De qué tipo es cada uno de links creados, sl_pr y hl_pr?
+softlink y hardlink.
+
+¿Cuál es el número de links que tiene cada fichero? ¿Qué significa ese valor? ¿Qué inodo tiene cada fichero? ¿Alguno de los links, sl_pr o hl_pr, tiene el mismo inodo que pr.txt? ¿Si es así, qué significa eso?
+2 links, número de apariciones en la tabla de ficheros, si el hardlink, que aparecen en el mismo bloque.
+

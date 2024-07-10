@@ -1,0 +1,96 @@
+Pregunta 1. Explica que es una política de encaminamiento y como se implementa.
+La política de encaminamiento se refiere a la función de buscar un camino entre todos los posibles en la red a partir de unos atributos que no son metricas técnicas.
+
+Pregunta 2. Explica como escala la tabla de encaminamiento BGP en función de la cantidad de AS’s a
+los que está conectado un AS.
+Escala de forma ((#número de AS's) * (#número de rutas)), porque en la tabla de encaminamiento de BGP hay todas las posibles rutas para llegar a cada AS, de estas rutas después se escoge la mejor para la tabla de encaminamientos del router.
+
+Pregunta 3. ¿Pará que sirve definir una dirección de loopback en un router? ¿Qué tipo de dirección
+es?
+Es una dirección vitual y sirve para evitar pérdidas de conectividad cuando se cae una interfaz física, de esta forma los routers que quieran enviar a esa dirección de loopback recalcularán la ruta para acceder desde otra interfaz física.
+
+Pregunta 4. ¿Cómo resuelve BGP el problema de los blucles?
+Con el AS-Path vector, consiste en un vector en el cual a medida que el paquete va pasando por AS's, los va poniendo en este vector. En caso de volver a pasar por un AS, el router verá que el AS se repite y descartará el paquete.
+
+Pregunta 5. ¿Qué diferencia hay entre IBGP e EBGP?
+IBGP se utiliza para coordinar políticas de encaminamien entre routers de un mismo AS y EBGP para routers entre AS. Entre routers IBGP no se anuncian rutas de encaminamiento aprendidas por IBGP, para evitar repetir el AS en el AS-Path vector.
+
+Pregunta 6. ¿Qué diferencia hay entre las redes que anuncia OSPF y las que anuncia BGP (e.g. con el
+comando network)?
+
+
+Pregunta 7. Explica la diferencia entre un atributo BGP conocido (“well-known”) y otro opcional. Idem
+si el atributo es mandatorio y discrecional. Menciona algún atributo que tenga la característica de
+ser conocido y discrecional, otro que sea conocido y mandatorio y otro que sea opcional y
+transitivo.
+Un atributo well-known es un atributo que tiene que ser conocido por todos los routers, por lo tanto todos los routers deben estar configurados para entender este atributo, mientras que el opcional no es necesario que todos los routers lo sepan interpretar.
+Un atributo mandatorio, es un atributo que es obligatorio incluirlo en cada update BGP, en cambio un discrecional no es necesario que aparezca en todos los updates BGP.
+ser conocido y discrecional: local-preference
+sea conocido y mandatorio: next-hop
+opcional y transitivo: comunidades
+
+Pregunta 8. ¿Qué significa que en una tabla BGP aparezca el atributo ORIGEN como incompleto? ¿Qué
+acción ha ejecutado el administrador del sistema para que aparezca como incompleto? ¿Qué
+efectos tiene dicha acción?
+Que el origen es desconocido, se ha distribuido en BGP desde un protocolo interno OSPF, IS-IS, RIP. Los efectos que tiene es que esta ruta será menos prioritaria que otras.
+
+
+Pregunta 9. ¿Qué relación hay entre los atributos ATOMIC AGGREGATE y AGGREGATOR?
+El atributo AGGREGATOR sirve para indicar que se ha hecho una agregación de subredes, y el ATOMIC AGGREGATE indica que puede ser que debido a esta agregación se haya perdido información importante de la ruta y por lo tanto no será la mejor opción. Es mandatorio que se use ATOMIC AGGREGATE si no se utiliza la opción as-set con AGGREGATE.
+
+Pregunta 10. Qué diferencia hay entre una política BGP inbound y una outbound. Qué atributo
+BGP te permite generar una política outbound?
+La política BGP inbound sirve para decidir de donde me llegarán los paquetes y la outbound para decidir por donde se enviarán. 
+El atributo local-preference
+
+Pregunta 11. ¿Qué es una política de “AS-path-prepending?. Explica mediante un ejemplo
+sencillo como un ISP puede usar esta política. ¿Qué atributo BGP permite definir a un ISP una
+política de tráfico de tipo “outbound”? Explica mediante un ejemplo sencillo como un ISP puede
+usar esta política.
+Esta política consiste en inflar el número de AS's en el AS-path vector con tu propio AS, con el objetivo de que no escogan una ruta que pase por tu red y routers. El atributo Local-preference.
+
+Pregunta 12. Explica la diferencia entre una comunidad “NO-EXPORT” y una comunidad “NO-
+ADVERTISE”. Pon un ejemplo de uso de cada una de ellas.
+La comunidad NO-EXPORT sirve para que las rutas anunciadas con esta comunidad no se adviertan a otros AS's(no salga del AS), y el NO-ADVERTISE para que no se anuncien las rutas a otros routers con sesiones BGP. NO-EXPORT con agregación, NO-ADVERTISE cuando el next-hop quieres que sea otro.
+
+Pregunta 14. ¿Qué diferencia hay entre asignar un “route-map” con el comando neighbor en
+modo “in” o en modo “out”? Explica qué efectos tienen ambas acciones sobre las tablas BGP del
+router emisor del UPDATE BGP y sobre el router receptor del UPDATE BGP. Indica un atributo que
+se use en modo “in” y otro en modo “out”. Explica que relación y que diferencia hay entre la tabla
+de encaminamiento y la tabla BGP.
+El router configurado con un route-map en modo in lo utiliza para realizar los cambios pertinentes (que se especifican en el route-map) en su tabla bgp, y el route-map modo out para enviar un UPDATE BGP con los atributos especificados a otro router. El atributo local-preference se utiliza en modo in en cambio el atributo MED se utiliza en modo out. La tabla BGP tiene todas las posibles rutas a los destinos, en cambio la tabla de encaminamientos del router tiene la mejor ruta para cada destino especificada en la tabla BGP.
+
+Pregunta 15. Justifica porqué los routers BGP tienen que estar i-BGP totalmente mallados y
+explica la diferencia entre el funcionamiento i-BGP y e-BGP respecto al anuncio de rutas.
+Porque los routers que aprenden rutas por i-BGP no lo pueden enviar a otros routers con conexión I-BGP, por lo tanto se necesita una malla completa para que se pueda propagar la ruta anunciada a otros AS's. La diferencia está en que las rutas aprendidas por e-BGP pueden ser enviadas tanto por e-BGP como por i-BGP. En el anuncio de rutas, cuando se anuncia una ruta de a través de una conexión e-BGP el router que anuncia la ruta incluye su AS en el AS-path vector, en cambio cuando se anuncia a través de i-BGP no se incluye el AS.
+
+Pregunta 16. Explica que es multi-homing y explica como se puede implementar una línea de
+back-up con un ISP.
+El multi-homing es cuando un AS tiene más de una conexión a un ISP o más. Con el local preference se puede indicar porque línea quieres enviar la información a internet, por lo tanto en la línea que quieres que sea de backup le pones un local-preference menor a la que quieres que haga de master. Por otro lado también puedes utilizar el atributo MED para indicar por donde quieres que te lleguen los paquetes, por lo tanto a la línea que quieres que sea de backup le pones un MED más alto.
+
+Pregunta 17. Explica que significa que el encaminamiento externo e interno estén
+sincronizados.
+Es cuando hay sincronización entre por ejemplo BGP y OSPF, cuando están sincronizados quiere decir que el encaminamiento interno tiene que aprender los next-hop que son las redes fronteras entre AS's. También tiene que haber sincronización de modo que entre 2 routers BGP tiene que haber routers BGP.
+
+Pregunta 18. Asume que tienes un ISP con 100 routers BGP. Indica cuantas sesiones I-BGP necesita
+para funcionar correctamente. Indica que tecnicas hay para reducir el número de
+sesiones I-BGP y explica brevemente el funcionamiento de una de ellas. Pon un
+ejemplo de las técnicas que has explicado enseñando la reducción de sesiones BGP a
+los 100 routers.
+
+Número de sesiones: (N(N-1))/2 = (100*99)/2 = 4950 sesiones
+
+Se pueden utilizar route reflectors, o bien confederaciones.
+
+Los route reflectors consisten en dividir el conjunto de routers en clusters, en cada cluster un route reflector, entre route reflectors tiene que haber una malla completa de sesiones I-BGP, en cada cluster basta con que cada router BGP tenga una sesión IBGP con el route reflector. Si un route reflector aprende una ruta via otro route reflector, lo envía a sus clientes. Si un route reflector aprende una ruta a través de una conexión e-BGP o un cliente, este lo reenvía a todos sus vecinos.
+
+Las confederaciones consisten en crear AS's privados dentro de un AS, de forma que en cada AS privado debe haber almenos un router con una conexión ei-BGP con un router de otra confederación. Dentro del AS privado tiene que haber una malla completa de sesiones i-BGP.
+
+
+Pregunta 22. Explica los conceptos de escalabilidad, sincronización y convergencia en BGP y como se
+solucionan cada uno de ellos.
+
+Escalabilidad con route reflectors y confederaciones.
+Sinconización con malla completa de i-BGP y anunciar las redes de las fronteras del AS con OSPF.
+Tiempo que tardan los routers BGP en tener todas las rutas posibles para todos los destinos posibles.
+

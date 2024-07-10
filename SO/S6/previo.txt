@@ -1,0 +1,29 @@
+1. . Consulta el man del proc (man proc) e indica, en el fichero “previo.txt”, en qué fichero
+del /proc, y en qué campo del fichero, se muestra el número de fallos de página totales
+del proceso (minor page faults + major page faults en Linux).
+En /proc/[pid]/stat se encuentran los minor page fault y major page fault.
+	En cminflt y cmajflt.
+	
+	
+2. Ejecuta el comando vmstat de manera que la salida se muestre cada segundo. ¿Qué
+opción has utilizado? ¿En qué columnas se muestra la cantidad de swap-in y swap-out?
+vmstat -a 1. En las columnas "si" y "so" de "swap".
+
+6.
+El fibonacci de 10 es 55
+real    0m0,001s
+
+El fibonacci de 20 es 6765
+real    0m0,002s
+
+El fibonacci de 30 es 832040
+real    0m0,012s
+
+El fibonacci de 40 es 102334155
+real    0m1,278s
+
+El fibonacci de 50 es 12586269025
+real    1m50,934s
+
+7. 14
+
