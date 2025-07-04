@@ -1,0 +1,7 @@
+c) Si no se hace el "schedule" del "stabilization", entonces no se ejecutarán los procesos de estabilización, por lo tanto, los nodos no llegarán a conocer su predecesor nunca.
+Cuando un nodo se inicia no se le asigna un nodo como predecesor, la variable "predecessor" tiene como valor "nil", y el nodo tiene que esperar a realizar el proceso de estabilización 
+para conocer a su nodo predecesor. Además, los sucesores de los nodos nunca se actualizarían, de modo que se quedarían con la asignación inicial de su sucesor, en caso del primer 
+nodo se tendrá a él mismo siempre sucesor, y pueden haber diversos nodos con el mismo sucesor.
+
+f) El procedimiento es prácticamente igual a si las peticiones no son duplicadas, en este caso se reemplaza la clave-valor que había por la duplicada y en el código de la función
+"storage:add()" escribe un aviso que comenta que la clave ya existe y se está reemplazando. Una vez el nodo sucesor vuelve a actualizar la réplica, vuelve a enviar un "ok" al cliente.

@@ -1,0 +1,67 @@
+
+CREATE TABLE DEPARTAMENTS
+         (        NUM_DPT INTEGER,
+        NOM_DPT CHAR(20),
+        PLANTA INTEGER,
+        EDIFICI CHAR(30),
+        CIUTAT_DPT CHAR(20),
+        PRIMARY KEY (NUM_DPT));
+
+CREATE TABLE PROJECTES
+         (        NUM_PROJ INTEGER,
+        NOM_PROJ CHAR(10),
+        PRODUCTE CHAR(20),
+        PRESSUPOST INTEGER,
+        PRIMARY KEY (NUM_PROJ));
+
+CREATE TABLE EMPLEATS
+         (        NUM_EMPL INTEGER,
+        NOM_EMPL CHAR(30),
+        SOU INTEGER,
+        CIUTAT_EMPL CHAR(20),
+        NUM_DPT INTEGER,
+        NUM_PROJ INTEGER,
+        PRIMARY KEY (NUM_EMPL),
+        FOREIGN KEY (NUM_DPT) REFERENCES DEPARTAMENTS (NUM_DPT),
+        FOREIGN KEY (NUM_PROJ) REFERENCES PROJECTES (NUM_PROJ));
+
+create table missatgesExcepcions(
+        num integer, 
+        texte varchar(50)
+        );
+
+insert into missatgesExcepcions values(1,'No es pot esborrar. Hi ha empleats del departament');
+insert into missatgesExcepcions values(2,'El departament no existeix');
+insert into missatgesExcepcions values(3,'Error Intern');
+
+INSERT INTO  DEPARTAMENTS VALUES (1,'Vendes',10,'World Trade Center','Barcelona');
+INSERT INTO  DEPARTAMENTS VALUES (2,'Compres',10,'World','Barcelona');
+
+INSERT INTO  PROJECTES VALUES (1,'IBDTEL','TELEVISIO',1000000);
+
+INSERT INTO  EMPLEATS VALUES (1,'Carme',400000,'MATARO',2,1);
+INSERT INTO  EMPLEATS VALUES (2,'Eugenia',350000,'TOLEDO',2,1);
+INSERT INTO  EMPLEATS VALUES (3,'Josep',250000,'SITGES',2,1);
+
+CREATE OR REPLACE FUNCTION eliminar_dept(numdept integer) RETURNS void AS $$
+DECLARE 
+   missatge varchar(50);
+ 
+BEGIN
+
+     DELETE FROM departaments WHERE num_dpt = numdept;
+
+     IF NOT FOUND THEN
+	   SELECT texte INTO missatge FROM missatgesExcepcions WHERE num=2; 
+           RAISE EXCEPTION '%',missatge;
+     END IF;
+
+EXCEPTION
+   WHEN raise_exception THEN
+           RAISE EXCEPTION '%',SQLERRM;
+   WHEN OTHERS THEN
+           SELECT texte INTO missatge FROM missatgesExcepcions WHERE num=3; 
+           RAISE EXCEPTION '%',missatge;
+
+END;
+$$LANGUAGE plpgsql;

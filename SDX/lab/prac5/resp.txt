@@ -1,0 +1,74 @@
+a)
+En esta implementación, si un cliente repite la misma query, el proceso de resolución del nombre es el mismo
+que sería si se hiciera por primera vez. Esto se debe principalmente a que, en esta primera implementación,
+no se está aprovechando la caché (debido a que tenemos un TTL por defecto igual a 0), lo que provoca la invalidación
+de todas las entradas, haciendo que cada resolución se realice de manera completa.
+
+b)
+Cuando el "Resolver" envía la request al dominio "upc" para resolver el nombre del host "www", el dominio "upc" responde con el identificador del proceso host, a pesar de estar apagado.
+Eso sucede porque los servidores registran los nombres de otros dominios o hosts, pero no los desregistran una vez se apagan o no son accesibles.
+
+c)
+Ahora, cuando enviamos stop al host este hace unregister, cuando el Resolver envie de nuevo la request a ese mismo host,
+este hará el lookup de nuevo y encontrará al host correctamente.
+
+d)
+El comportamiento que observamos, una vez hemos realizado los pasos indicados (configuración del TTL, stop del host
+y puesta en marcha con el mismo nombre), es que al realizar nuevamente una petición, obtenemos un “no reply from host”.
+Esto se produce principalmente por las entradas que estamos guardando en la caché. A pesar de haber hecho el “stop” del
+host, el resolver mantendrá su entrada hasta que su TTL expire, lo que implica que los datos que contiene esa entrada ya
+no serán correctos, en especial el processID. Cuando el cliente realiza nuevamente la petición, el resolver le devuelve
+la entrada antigua, por lo que el cliente realiza un ping a un processID que ya no existe (debido a que, a pesar de registrar
+el host con el mismo nombre, su processID ha cambiado). Por este motivo, una vez el TTL de la entrada expira, la nueva resolución
+guarda la entrada con los datos correctos y los pings vuelven a funcionar desde los clientes.
+
+e)
+El nodo servidor con el dominio "upc" y el cliente. El nodo servidor con dominio "upc" le llega el mensaje de registrar por parte del host, por lo tanto ya es
+consciente de la nueva ubicación del host (este caso nuevo identificador de proceso). Una vez pasa el tiempo del TTL para el cliente, en vez de intentar comunicarse 
+con el host directamente, vuelve a resolver el nombre, y guarda en cache el nuevo contexto enviado por el servidor de dominio "upc".
+
+f)
+Lo podrá encontrar correctamente cuando el TTL de la entrada de la caché llegue a 0 y expire.
+
+g)
+Partiendo de las variables indicadas, hemos llegado a la siguiente expresión para cuantificar el número de mensajes necesarios 
+para una resolucion de nombre en función de si se hace uso o no de cache.
+
+* 1 + floor(T/F) 
+
+Teniendo en cuenta que el tiempo de vida (TTL) de una entrada en caché es T, y que realizamos consultas con una frecuencia F,
+esto nos permite saber que podremos hacer hasta (T/F) consultas adicionales reutilizando
+una única resolución completa.
+De ahí que sumemos 1 al resultado, ya que la primera consulta provoca la resolución, y las siguientes la reutilizan.
+
+* F * (1 + floor(T/F))
+
+Esta expresión representa el tiempo total durante el cual se aprovecha una única resolución,
+considerando que cada consulta ocurre cada F segundos.
+
+* 1 + floor(R / (F * (1 + (T/F))))
+
+Dividir el tiempo total de resolución R entre el tiempo de uso de una misma entrada en caché nos indica
+cuántas veces será necesario repetir la resolución completa durante R segundos.
+Es decir, cuántas veces caducará la caché y será necesario volver a contactar con los servidores.
+Sumamos 1 por la resolución inicial (la primera vez que se consulta el nombre).
+
+Finalmente, sabiendo que cada resolución genera 2 mensajes por cada nivel del espacio de nombres (una petición y una respuesta),
+y que tenemos el host a una profundidad D, lo que implica contactar con D servidores distintos,
+llegamos a la expresión final:
+
+* Numero de mensajes = 2 * D * (1 + floor(R / (F * (1 + floor(T/F)))))
+
+Esta expresión sirve tanto si tenemos cache como en el caso en el que trabajemos sin, ya que esta situación seria equivalente 
+a un TTL = 0, es decir, a la siguiente expresión
+
+* Numero de mensajes (sin cache) = 2 * D * (1 + floor(R / F))
+
+i)
+Al primer cliente que envía la "query" al servidor root, el servidor le devuelve la resolución de todos los servidores hasta llegar al servidor que puede resolver el nombre del host,
+y también la resolución del host. Al segundo cliente que envía la "query", como el servidor root tiene en cache la resolución del nombre del host, 
+únicamente le envía al cliente la resolución del nombre del host, ya que no le ha hecho falta llamar recursivamente a otros servidores.
+
+j)
+La recursiva se aprovecha mejor del caching, porque se puede aprovechar parcialmente de los resultados de queries que han hecho otros
+clientes previamente.

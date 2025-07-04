@@ -1,0 +1,57 @@
+a)
+Puede ocurrir que en algún momento todos los workers estén al mismo tiempo en la fase de 'wait', 
+esperando a recibir el ok de los demás, hasta que haya alguno o algunos que se rindan. 
+Esto ocurre porque en algún momento hay workers que necesitan el ok mutuo. 
+Como todos tienen la misma prioridad y no hay una adecuada sincronización, puede ocurrir un abrazo mortal.
+
+b)
+1. Cuando un proceso es el último de los cuatro en enviar las requests y que le lleguen al resto, 
+y por lo tanto tiene en la cola de REFS las requests enviadas a todo los procesos. 
+En este caso si el tiempo de trabajo en la región crítica es algo elevado ocasiona withdrawal.
+
+2. Cuando cualquier proceso en estado de waiting recive un request, 
+siempre pondrá en cola al proceso que hace la request y eso hace que se queden esperando unos a otros.
+
+c)
+Cuando varios procesos intentan acceder a la región crítica, lock2 gestiona el acceso mediante un sistema de prioridades basado en el identificador (Id) de cada proceso. 
+En este sistema, el proceso con el Id más bajo tiene la mayor prioridad y será el primero en acceder.
+
+Para evitar que dos procesos entren simultáneamente a la región crítica debido a cambios de prioridad, si un proceso con menor prioridad ya ha enviado solicitudes (request) 
+y luego recibe una nueva solicitud de un proceso con mayor prioridad, debe ceder el acceso. 
+En este caso, el proceso de menor prioridad enviará un {ok, Ref} al proceso con mayor prioridad y, además, volverá a solicitar el lock con una nueva referencia. 
+Esto garantiza que el proceso de menor prioridad no entre antes que el de mayor prioridad haya recibido todos los permisos necesarios.
+
+El funcionamiento es el siguiente:
+
+Si un proceso (ej. worker2) solicita el acceso a la región crítica, enviando request a todos los nodos y esperando recibir {ok, Ref} de cada uno.
+Si, durante esta espera, un proceso de mayor prioridad (worker1) también solicita acceso, worker2 le cede el paso enviándole {ok, Ref}.
+Para asegurarse de que worker2 no acceda antes que worker1, este último enviará una nueva solicitud (request) con una nueva referencia.
+worker1, al ser de mayor prioridad, reunirá primero los permisos y entrará en la región crítica.
+
+
+d)
+1. No tiene porqué, ya que ahora los procesos se ordenan por prioridades, por lo que si el proceso con id=1 envía requests, 
+como mucho tendrá una request en la cola de REFS que será la enviada al proceso que está en la región crítica "held".
+2. No tiene porqué, ya que hay un método para decidir quien va antes y no se quedan esperando entre ellos. 
+No habrá una repartición equivalente pero tampoco habrá withdrawal. Si los tiempos de trabajo son muy altos si que puede llega a haber.
+
+e) La principal desventaja es que la prioridad es el id de los procesos, con menor id más prioridad, 
+por lo que los procesos altos podrán llegar a nunca recibir acceso. 
+Es decir una posible starvation según el tiempo de trabajo y el de sleep.
+
+f)
+La implementación de lock3 no requiere del envio de un mensaje de request ni de ok adicionales en la situación descrita.
+Suponiendo que worker2 cede ante worker1, (por sus respectivos Id 1 y 2), worker1 actualiza su MyNewClock al maximo de (ReqTime, MyClock) 
+lo que garantiza que no pueda acceder antes que el worker1. Una vez worker1 ya acabe, worker2 podra acceder.
+
+
+g)
+1. No tiene porqué, ya que lo que importa en este caso es que el tiempo de Lamport sea menor para que te den permiso para entrar en la región crítica.
+ Es decir, a pesar de enviar el request más tarde que otros procesos, puede ser que el tiempo lógico de Lamport sea menor.
+
+2. No, ya que hay un método para dictar el orden de acceso. Además, hay una repartición equivalente por lo que ninguno de los procesos se cansará de esperar. 
+A no ser que el tiempo de trabajo sea extremadamente alto.
+
+h) Si que es posible si el reloj de Lamport solo esta en el nivel de los locks.
+Si los workers no participan en el mecanismo de Lamport, dos de estos se pueden 
+comunicar de manera independiente y entonces el orden de las request ya no reflejaria el verdadero orden.

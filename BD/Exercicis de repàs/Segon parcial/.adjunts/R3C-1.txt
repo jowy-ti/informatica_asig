@@ -1,0 +1,14 @@
+create table empleats1 (nemp1 integer primary key, nom1 char(25), ciutat1 char(10) not null);
+
+create table empleats2 (nemp2 integer primary key, nom2 char(25), ciutat2 char(10) not null);
+
+create table missatgesExcepcions(
+	num integer, 
+	texte varchar(100)
+	);
+
+
+insert into missatgesExcepcions values(1,' Els valors de l''atribut ciutat1 d''empleats1  han d''estar inclosos en els valors de ciutat2');
+
+insert into empleats2 values(1,'joan','bcn');
+

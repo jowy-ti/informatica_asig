@@ -1,0 +1,54 @@
+a)
+No, a medida que incremente el número de clientes, el servidor tendría que manejar más conexiones y reenviar más mensajes a los clientes.
+Al tener una cantidad considerable de clientes, los mensajes (join, leave, message) podrían acumularse y producir latencia y retraso 
+en el funcionamiento del servidor.
+
+b)
+Los clientes ya no pueden ver lo que escriben otros clientes, y por lo tanto ya no hay un chat común. 
+Tampoco podrán saber del estado de los otros clientes.
+
+c)
+No, los mensajes de un cliente enviados a los otros no están garantizados a llegar con el orden en el que fueron enviados. 
+Si los clientes destinatarios son distintos, el orden de llegada dependerá de factores de la red.
+
+d)
+No, según la documentación de Erlang el orden de la recepción de mensajes está garantizado solo dentro de un mismo proceso.
+Esto significa que el servidor enviará los mensajes en el orden en que los ha recibido, pero no
+se garantiza que los mensajes lleguen al servidor en el mismo orden en que fueron enviados por los clientes.
+
+e)
+No, porque se garantiza el orden de los mensajes de un mismo proceso, por lo tanto si "B" ha respondido el mensaje de "A" quiere 
+decir que el proceso del servidor ha recibido anteriormente el mensaje de "A" y lo habrá enviado al resto de clientes. Por lo tanto el 
+proceso del servidor recibirá después el mensaje de "B", y mantendrá el orden de los mensajes enviados primero "A" y después "B".
+
+f)
+No, si se une o abandona el chat mientra el servidor está transmitiendo un mensaje, es posible que no reciba ese.
+Porque envía el mensaje a los clientes que tenga en la lista actual de clientes, hay 2 casos en los que no recibe el mensaje:
+
+	- Si se une después de que la función broadcast haya empezado a ejecutarse, ese cliente no se encontará en la lista y no recibirá el mensaje.
+
+	- Si un cliente se desconecta antes de que la función broadcast se ejecute, este no recibirá el mensaje.
+
+g)
+Los clientes conectados al servidor que se ha desconectado dejan de “formar parte del chat”, quedando incomunicados. El resto de
+clientes de los otros servidores no perciben ningún cambio.
+
+h)
+La c) y la d) se mantienen, pero la e) cambia. Al haber más de un servidor, por ejemplo en el caso de que los clientes "C", "B" y "A" 
+sean adjacentes a servidores diferentes, se puede dar el caso de que el mensaje de "A" llegue con bastante latencia a "C" y en ese tiempo 
+le haya dado tiempo a "B" a responder, y llegar al mensaje de "B" antes al servidor adjacente de "C". En resumen, si hay diferentes 
+servidores puede ser que al servidor adjacente de "C" le llegue antes el mensaje de "B" que el de "A".
+
+i)
+Si hay peticiones concurrentes de servidores para unirse o salirse del sistema, las listas de servidores pueden quedar desactualizadas provocando
+envíos de mensajes a servidores inexistentes.
+
+j)
+Las ventajas de esta implementación son principalmente dos:
+	-	Escalabilidad: Los múltiples servidores pueden soportar más clientes, ya que estos últimos se pueden distribuir en los diversos
+servidores, permitiendo incluso balanceo de carga.
+	-	Tolerancia a fallos: En caso de que alguno de los servidores falle, los clientes del mismo podrían conectarse a otro servidor operativo.
+
+La principal desventaja sería la latencia introducida por el uso de diversos servidores, ya que, para que un mensaje llegue a su destino, debe
+atravesar todos los servidores, lo que aumenta el tiempo de entrega de los mensajes. En el peor de los casos, el “número de saltos” a realizar
+para el envío de mensajes entre clientes conectados en servidores diferentes podría ser N, siendo N el número de servidores del sistema distribuido.

@@ -1,0 +1,69 @@
+CREATE TABLE DEPARTAMENTS
+         (        NUM_DPT INTEGER,
+        NOM_DPT CHAR(20),
+        PLANTA INTEGER,
+        EDIFICI CHAR(30),
+        CIUTAT_DPT CHAR(20),
+        PRIMARY KEY (NUM_DPT));
+
+CREATE TABLE PROJECTES
+         (        NUM_PROJ INTEGER,
+        NOM_PROJ CHAR(10),
+        PRODUCTE CHAR(20),
+        PRESSUPOST INTEGER,
+        PRIMARY KEY (NUM_PROJ));
+
+CREATE TABLE EMPLEATS
+         (        NUM_EMPL INTEGER,
+        NOM_EMPL CHAR(30),
+        SOU INTEGER,
+        CIUTAT_EMPL CHAR(20),
+        NUM_DPT INTEGER,
+        NUM_PROJ INTEGER,
+        PRIMARY KEY (NUM_EMPL),
+        FOREIGN KEY (NUM_DPT) REFERENCES DEPARTAMENTS (NUM_DPT),
+        FOREIGN KEY (NUM_PROJ) REFERENCES PROJECTES (NUM_PROJ));
+
+create table missatgesExcepcions(
+        num integer, 
+        texte varchar(50)
+        );
+
+		
+		
+insert into missatgesExcepcions values(1,'El departament no te cap empleat a SITGES');
+insert into missatgesExcepcions values(2,'Error Intern');
+
+INSERT INTO  DEPARTAMENTS VALUES (1,'Vendes',10,'World Trade
+Center','Barcelona');
+
+INSERT INTO  PROJECTES VALUES (1,'IBDTEL','TELEVISIO',1000000);
+
+INSERT INTO  EMPLEATS VALUES (3,'Josep',250000,'SITGES',1,1);
+INSERT INTO  EMPLEATS VALUES (4,'Miquel',200000,'SITGES',1,1);
+
+
+
+CREATE TYPE empl AS
+( nom char(30),
+  sou integer);
+
+CREATE OR REPLACE FUNCTION empl_departament(numdept integer) RETURNS setof empl AS $$
+DECLARE 
+  e empl;
+  missatge varchar(50);
+  quants integer;
+
+BEGIN
+
+  quants = 0;
+  FOR e IN SELECT nom_empl, sou FROM empleats em WHERE em.num_dpt = numdept
+     LOOP
+     quants=quants+1;
+     RETURN NEXT e;
+     END LOOP;
+
+  RETURN;
+
+END;
+$$LANGUAGE plpgsql;

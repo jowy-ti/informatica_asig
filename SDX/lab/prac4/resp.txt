@@ -1,0 +1,46 @@
+a)
+Si el líder tiene un crash, los workers ya no reciben mensajes de un líder, ya que tras una fallada de un líder, no se hace una elección para elegir al próximo líder. 
+Por lo tanto, los mensajes de los workers que envian al líder para hacer multicast, al final no llega ningún líder ni se hace multicast de ese mensaje.
+
+b)
+Si el líder tiene un crash, otro proceso iniciará una election para elegir a un nuevo líder,
+dejando al anterior líder fuera del grupo. El nuevo líder será el que se encuentra primero en la lista Slaves y
+los demás se ajustan a la nueva vista y monitorean al nuevo líder.
+Después de un carsh del líder el sistema se recupera automáticamente, asumiendo que no todos los nodos
+fallan al mismo tiempo.
+
+c)How can the membership service tolerate the crash of a slave worker if we are not monitoring slaves?
+
+En la implementación "gms2", el único proceso que es monitorizado por otros es el líder. 
+Por esta razón, no hay una manera directa de saber qué esclavos han caído y cuáles siguen activos, 
+por lo que en la lista de Slaves podríamos tener tanto esclavos vivos como muertos.
+
+Si bien es posible que, durante el proceso de elección, se elija de la lista "Slaves" como nuevo líder a un esclavo que ha caído, 
+tarde o temprano los demás esclavos se darán cuenta de que ese nuevo líder también está muerto. 
+Como consecuencia, se volverá a iniciar el proceso de elección hasta que se encuentre un proceso que esté vivo.
+
+d)
+Porque al crashear el líder se necesita hacer una elección para elegir el próximo líder. Y antes de los slaves darse cuenta que el líder ha crasheado y hacer la elección, 
+hay mensajes que por ejemplo se han podido haber enviado al anterior líder y antes de poder hacer broadcast del mensaje ha crasheado.
+
+e)
+Tendríamos que implementar reliable multicast. Así cuando un proceso detecta que ha perdido algún mensaje,
+viendo que el número de secuencia del mensaje entrante es mayor a lo esperado, este proceso puede mantener el mensaje
+en una hold-back queue y enviar NACK's al líder para conseguir los mensajes anteriores a el entrante.
+Cuando un proceso envíe un mensaje también tendrá que comporovar su hold-back queue,
+para ver si hay algún otro mensaje listo para entregar.
+
+Esto supondrá una mayor latencia en caso de pérdidas, el uso de hold-back queues por lo que mayor uso de memoria
+y una mayor complejidad en la implementación de los nodos.
+
+f) What would happen if we wrongly suspect the leader to have crashed?
+
+Lo primero que ocurriría sería una nueva elección, en la que se escogería un nuevo líder. Una vez finalizada la elección,
+nos encontraríamos en una situación en la que habría dos líderes activos. No obstante, los esclavos solo enviarían sus mensajes al nuevo líder.
+Mientras tanto, el antiguo líder continuaría reenviando únicamente sus propios mensajes a los esclavos del sistema.
+Como resultado, los esclavos recibirían mensajes con métricas diferentes e incoherentes por parte de ambos líderes, lo que provocaría
+una desincronización entre ellos.
+
+g)
+Cuando el número de secuencia del mensaje enviado es menor que el número de secuencia del último mensaje recibido por el resto de nodos. Eso quiere decir que el mensaje enviado
+es anterior al último mensaje recibido por el resto y por lo tanto se descarta, por tal de mantener los nodos sincronizados.

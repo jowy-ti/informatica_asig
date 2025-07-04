@@ -1,0 +1,19 @@
+create table treballadors (num_treballador integer primary key, salari integer, usuari char(30));
+
+create table usuari_actual(usuari char(10));
+
+insert into usuari_actual values('bd0003');
+
+
+CREATE or replace FUNCTION auditoria() RETURNS trigger AS $$
+DECLARE
+us char(30);
+BEGIN
+      us := (select usuari from usuari_actual); 
+      update treballadors set usuari=us where num_treballador = NEW.num_treballador;
+      RETURN NULL;
+END;
+$$LANGUAGE plpgsql;
+
+CREATE TRIGGER ex172 AFTER INSERT ON treballadors  FOR EACH ROW EXECUTE PROCEDURE auditoria();
+

@@ -1,0 +1,59 @@
+a)
+No hay orden FIFO en los procesos porque los mensajen envíados por un mismo proceso no se asegura que se reciban en ese mismo orden, ya que no hay nada para controlar el orden.
+Tampoco hay orden causal, ya que los mensajes no se envían en el mismo orden para todos los processos.
+No se cumple orden total, debido a que se puede ver como los procesos
+reciben los mensajes en orden diferente entre ellos.
+
+b)
+Todos los mensajes de un proceso están en orden FIFO en los diferentes procesos. Esto se debe
+principalmente al uso del vector clock y de la cola, que impiden que un mensaje posterior se entregue antes
+que uno anterior.
+
+Asimismo, se cumple con el orden causal gracias al vector clock y la cola, lo que impide que veamos respuestas
+antes de ver el mensaje al que responden.
+
+Finalmente, no se cumple el orden total, ya que en la ejecución de esta implementación se puede ver cómo los procesos
+reciben los mensajes en un orden diferente entre ellos.
+
+c)
+Únicamente se cumple "total order", porque todos ls procesos reciben los mensajes en el mismo orden, pero estos mensajes no respetan causalidad, 
+ya que hay respuestas antes que el mensaje inicial, y no hay "FIFO order", ya que no se reciben los mensajes en el mismo orden en que un proceso los envía.
+
+d)
+Si el sistema tiene orden FIFO y total con nuestra implementación, no se garantiza el orden causal.
+Aunque se asegura de que los mensajes tienen un número de secuencia único y usa FIFO para ordenar los mensajes de un mismo proceso, 
+no hay control de las relaciones de causalidad entre los mensajes de diferentes procesos.
+
+e)
+El proceso de consenso comienza cuando uno de los workers envía el primer mensaje {send, ...}.
+Para calcular el resto de los mensajes enviados en un sistema con N nodos, es necesario considerar
+las siguientes cuatro etapas del envío del mismo:
+
+1.	Iniciar la propuesta para un número de secuencia
+El nodo emisor envía un multicast {request, ...} a todos los nodos, incluyéndose a sí mismo, por lo que el número de mensajes
+enviados en este caso es N.
+
+2.	Envío de propuesta por parte de los nodos
+Cada nodo responde al {request, ...} con una propuesta de secuencia {proposal, ...}. Por lo tanto, se envían N mensajes.
+
+3.	Selección de número de secuencia
+El nodo emisor escoge el número de secuencia de todas las propuestas enviadas y comunica su decisión a todos los nodos, por lo que
+envía un total de N mensajes {agreed, ...}.
+
+4.	Entrega del mensaje
+Cuando los nodos reciben el mensaje {agreed, ...}, actualizan sus colas y envían el mensaje {deliver, Msg} a sus Masters, generando N mensajes.
+
+Finalmente, después de toda esta explicación, llegamos a la siguiente expresión:
+
+f(N): mensajes totales
+f(N) = 1 send + N request + N proposal + N agreed + N deliver = 4N + 1
+
+f)
+En la primera implementación, el worker le envíaba un mensaje {send} al servidor, el servidor hacía un multicast al resto de servidores, 
+y finalmente todos los servidores hacían un deliver a su worker del mensaje.
+
+N: workers
+f(N): mensajes totales
+
+f(N) = 1 send + N-1 multicast + N deliver = 2N
+
